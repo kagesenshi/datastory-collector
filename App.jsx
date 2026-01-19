@@ -48,6 +48,7 @@ const App = () => {
         filters: [],
         frequency: 'Daily',
         value: '',
+        importance: 0,
         sources: []
     });
 
@@ -114,6 +115,7 @@ ${u.stories.map(s => `    - id: ${s.id}
       filters:${listItems(s.filters, '      ')}
       frequency: ${escape(s.frequency)}
       businessValue: ${escape(s.value)}
+      importance: ${escape(s.importance)}
       sourceSystems:${listItems(s.sources, '      ')}
       timestamp: ${escape(s.timestamp)}`).join('\n')}`;
         }).join('\n');
@@ -195,7 +197,7 @@ ${u.stories.map(s => `    - id: ${s.id}
             }]);
         }
         updateGlobalMemory(currentStory);
-        setCurrentStory({ action: 'view an interactive dashboard', metrics: [], dimensions: [], filters: [], frequency: 'Daily', value: '', sources: [] });
+        setCurrentStory({ action: 'view an interactive dashboard', metrics: [], dimensions: [], filters: [], frequency: 'Daily', value: '', importance: 0, sources: [] });
         setStep(1);
         setView('manage');
     };
