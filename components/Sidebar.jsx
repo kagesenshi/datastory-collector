@@ -3,7 +3,7 @@ import { Database, Plus, ListFilter, CheckCircle2, History, BookOpen, Download }
 
 const Sidebar = ({ view, setView, stories, step, globalSuggestions, exportToCSV }) => {
     return (
-        <div className="w-full md:w-80 bg-slate-900 text-white p-10 flex flex-col shrink-0 shadow-2xl z-20">
+        <div className="w-full md:w-80 bg-slate-900 text-white p-10 flex flex-col shrink-0 shadow-2xl z-20 h-screen overflow-y-auto">
             <div className="mb-12">
                 <div className="flex items-center gap-3 text-indigo-400 mb-2">
                     <Database size={32} />
