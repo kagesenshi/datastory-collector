@@ -75,6 +75,12 @@ const Sidebar = ({ view, setView, stories, step, globalSuggestions, onViewYaml }
                 >
                     <Download size={18} /> View YAML
                 </button>
+
+                <div className="pt-4 text-[10px] text-slate-600 font-bold tracking-widest text-center">
+                    <a href="https://kagesenshi.org" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors">
+                        (c) kagesenshi.org
+                    </a>
+                </div>
             </div>
         </div>
     );
