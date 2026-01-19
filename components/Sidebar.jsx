@@ -1,5 +1,5 @@
 import React from 'react';
-import { Database, Plus, ListFilter, CheckCircle2, History, BookOpen, Download } from 'lucide-react';
+import { Database, Plus, ListFilter, CheckCircle2, History, BookOpen, Download, Grid } from 'lucide-react';
 
 const Sidebar = ({ view, setView, stories, step, globalSuggestions, onViewYaml }) => {
     return (
@@ -59,6 +59,14 @@ const Sidebar = ({ view, setView, stories, step, globalSuggestions, onViewYaml }
                         <BookOpen size={14} /> Explore Library
                     </button>
                 </div>
+
+                <button
+                    onClick={() => setView('matrix')}
+                    disabled={stories.length === 0}
+                    className="w-full flex items-center justify-center gap-3 py-4 bg-indigo-600 text-white rounded-2xl font-black text-xs uppercase tracking-widest transition-all disabled:opacity-20 disabled:grayscale hover:bg-indigo-700 active:scale-95 shadow-lg shadow-indigo-900/20"
+                >
+                    <Grid size={18} /> EDW Bus Matrix
+                </button>
 
                 <button
                     onClick={onViewYaml}

@@ -17,6 +17,7 @@ import Sidebar from './components/Sidebar';
 import LiveLogicPreview from './components/LiveLogicPreview';
 import UserProfileModal from './components/UserProfileModal';
 import YamlPreview from './components/YamlPreview';
+import EDWBusMatrix from './components/EDWBusMatrix';
 
 const App = () => {
     const [view, setView] = useState('wizard');
@@ -315,6 +316,8 @@ ${u.stories.map(s => `    - id: ${s.id}
                             <LibraryView globalSuggestions={globalSuggestions} setView={setView} />
                         ) : view === 'yaml' ? (
                             <YamlPreview content={yamlSource} onClose={() => setView('manage')} />
+                        ) : view === 'matrix' ? (
+                            <EDWBusMatrix stories={stories} setView={setView} />
                         ) : (
                             <ManagementView
                                 stories={stories}
