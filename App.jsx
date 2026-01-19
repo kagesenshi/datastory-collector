@@ -91,6 +91,28 @@ const App = () => {
             return '\n' + arr.map(item => `${indent}- ${escape(item)}`).join('\n');
         };
 
+        const getIsoTimestamp = (str) => {
+            if (!str) return '';
+            try {
+                // Try standard Date constructor first
+                let date = new Date(str);
+                if (!isNaN(date.getTime())) return date.toISOString();
+
+                // Handle DD/MM/YYYY format commonly seen in locales
+                // Matches "19/01/2026, 22:56:52"
+                const ddmmyyyy = str.match(/^(\d{2})\/(\d{2})\/(\d{4}),\s*(\d{2}):(\d{2}):(\d{2})$/);
+                if (ddmmyyyy) {
+                    const [_, day, month, year, hour, minute, second] = ddmmyyyy;
+                    date = new Date(`${year}-${month}-${day}T${hour}:${minute}:${second}`);
+                    if (!isNaN(date.getTime())) return date.toISOString();
+                }
+
+                return str;
+            } catch (e) {
+                return str;
+            }
+        };
+
         const grouped = stories.reduce((acc, s) => {
             const key = `${s.userEmail || ''}|${s.submittedBy || ''}|${s.userRole || ''}`;
             if (!acc[key]) {
@@ -112,7 +134,12 @@ const App = () => {
   userEmail: ${escape(u.userEmail)}
   userDepartment: ${escape(u.userDepartment)}
   userStories:
-${u.stories.map(s => `    - id: ${s.id}
+${u.stories.map(s => {
+                const isoTime = getIsoTimestamp(s.timestamp);
+                // Don't escape if it's a valid ISO string to allow YAML timestamp type
+                const finalTime = isoTime !== s.timestamp || (isoTime.includes('T') && isoTime.endsWith('Z')) ? isoTime : escape(isoTime);
+
+                return `    - id: ${s.id}
       action: ${escape(s.action)}
       metrics:${listItems(s.metrics, '      ')}
       dimensions:${listItems(s.dimensions, '      ')}
@@ -121,7 +148,8 @@ ${u.stories.map(s => `    - id: ${s.id}
       businessValue: ${escape(s.value)}
       importance: ${escape(s.importance)}
       sourceSystems:${listItems(s.sources, '      ')}
-      timestamp: ${escape(s.timestamp)}`).join('\n')}`;
+      timestamp: ${finalTime}`;
+            }).join('\n')}`;
         }).join('\n');
 
         setYamlSource(yamlContent);
@@ -186,7 +214,7 @@ ${u.stories.map(s => `    - id: ${s.id}
                 userRole: userProfile.role,
                 userEmail: userProfile.email,
                 userDepartment: userProfile.department,
-                timestamp: new Date().toLocaleString()
+                timestamp: new Date().toISOString()
             } : s));
             setEditingId(null);
         } else {
@@ -197,7 +225,7 @@ ${u.stories.map(s => `    - id: ${s.id}
                 userRole: userProfile.role,
                 userEmail: userProfile.email,
                 userDepartment: userProfile.department,
-                timestamp: new Date().toLocaleString()
+                timestamp: new Date().toISOString()
             }]);
         }
         updateGlobalMemory(currentStory);
