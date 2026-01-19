@@ -4,6 +4,8 @@ import {
     ChevronLeft,
     Edit3,
     User,
+    Menu,
+    X,
 } from 'lucide-react';
 
 // Import modular components
@@ -26,6 +28,7 @@ const App = () => {
     const [editingId, setEditingId] = useState(null);
     const [showProfileModal, setShowProfileModal] = useState(false);
     const [yamlSource, setYamlSource] = useState('');
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
     const [globalSuggestions, setGlobalSuggestions] = useState(() => {
         const saved = localStorage.getItem('datastory_suggestions');
@@ -217,32 +220,63 @@ ${u.stories.map(s => `    - id: ${s.id}
         return true;
     };
 
+    const handleSetView = (newView) => {
+        setView(newView);
+        setIsSidebarOpen(false);
+    };
+
     return (
-        <div className="min-h-screen bg-slate-50 flex flex-col md:flex-row font-sans text-slate-900 selection:bg-indigo-100 selection:text-indigo-900">
-            <Sidebar
-                view={view}
-                setView={setView}
-                stories={stories}
-                step={step}
-                globalSuggestions={globalSuggestions}
-                onViewYaml={() => setView('yaml')}
-            />
+        <div className="min-h-screen bg-slate-50 flex flex-col lg:flex-row font-sans text-slate-900 selection:bg-indigo-100 selection:text-indigo-900 relative">
+
+            {/* Mobile Sidebar Toggle Button */}
+            <div className="lg:hidden fixed top-4 left-4 z-50">
+                <button
+                    onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+                    className="p-3 bg-slate-900 text-white rounded-full shadow-xl hover:bg-slate-800 transition-all active:scale-95"
+                >
+                    {isSidebarOpen ? <X size={20} /> : <Menu size={20} />}
+                </button>
+            </div>
+
+            {/* Mobile Sidebar Overlay */}
+            {isSidebarOpen && (
+                <div
+                    className="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-30 lg:hidden transition-opacity"
+                    onClick={() => setIsSidebarOpen(false)}
+                />
+            )}
+
+            {/* Sidebar Container */}
+            <div className={`
+                fixed inset-y-0 left-0 z-40 w-80 transform transition-transform duration-300 ease-in-out lg:shadow-none
+                ${isSidebarOpen ? 'translate-x-0 shadow-2xl' : '-translate-x-full'}
+                lg:relative lg:translate-x-0 lg:transform-none lg:block 
+            `}>
+                <Sidebar
+                    view={view}
+                    setView={handleSetView}
+                    stories={stories}
+                    step={step}
+                    globalSuggestions={globalSuggestions}
+                    onViewYaml={() => { setView('yaml'); setIsSidebarOpen(false); }}
+                />
+            </div>
 
             <div className="flex-1 flex flex-col xl:flex-row h-screen overflow-hidden">
-                <div className="flex-1 flex flex-col p-8 md:p-16 overflow-y-auto relative">
+                <div className="flex-1 flex flex-col p-4 md:p-16 overflow-y-auto relative">
                     <button
                         onClick={() => setShowProfileModal(true)}
-                        className="absolute top-8 right-8 flex items-center gap-2 bg-white border border-slate-100 px-5 py-3 rounded-2xl shadow-sm hover:shadow-md transition-all group active:scale-95 z-10"
+                        className="w-full mb-8 pl-16 md:pl-5 md:mb-0 md:w-auto md:absolute md:top-8 md:right-8 flex items-center gap-2 bg-white border border-slate-100 px-5 py-3 rounded-2xl shadow-sm hover:shadow-md transition-all group active:scale-95 z-10"
                     >
-                        <div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-xs uppercase group-hover:bg-indigo-600 group-hover:text-white transition-colors">
+                        <div className="w-8 h-8 rounded-xl bg-indigo-50 flex items-center justify-center text-indigo-600 font-bold text-xs uppercase group-hover:bg-indigo-600 group-hover:text-white transition-colors shrink-0">
                             {userProfile.fullName ? userProfile.fullName.charAt(0).toUpperCase() : <User size={14} />}
                         </div>
-                        <div className="text-left">
-                            <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-0.5">Profile</div>
-                            <div className="text-xs font-bold text-slate-800 leading-none">{userProfile.fullName || 'Complete Profile'}</div>
+                        <div className="text-left overflow-hidden">
+                            <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest leading-none mb-0.5 whitespace-nowrap overflow-hidden text-ellipsis">Profile</div>
+                            <div className="text-xs font-bold text-slate-800 leading-none whitespace-nowrap overflow-hidden text-ellipsis">{userProfile.fullName || 'Complete Profile'}</div>
                             {userProfile.fullName && (
-                                <div className="text-[9px] text-slate-400 mt-1 font-medium leading-none">
-                                    {userProfile.email} • {userProfile.department}
+                                <div className="text-[9px] text-slate-400 mt-1 font-medium leading-none whitespace-nowrap overflow-hidden text-ellipsis">
+                                    {userProfile.email}
                                 </div>
                             )}
                         </div>

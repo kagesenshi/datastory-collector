@@ -1,20 +1,31 @@
-import React from 'react';
-import { Code } from 'lucide-react';
+import React, { useState } from 'react';
+import { ChevronDown, ChevronUp } from 'lucide-react';
 
 const LiveLogicPreview = ({ userProfile, currentStory }) => {
+    const [isExpanded, setIsExpanded] = useState(true);
+
     return (
-        <div className="w-full xl:w-[450px] bg-slate-50 border-t xl:border-l xl:border-t-0 border-slate-200 p-8 shrink-0 flex flex-col justify-center">
-            <div className="bg-slate-900 rounded-[2.5rem] p-10 shadow-2xl relative overflow-hidden text-lg leading-relaxed font-medium text-slate-400 font-sans">
+        <div className={`w-full xl:w-[450px] bg-slate-50 border-t xl:border-l xl:border-t-0 border-slate-200 shrink-0 flex flex-col justify-center transition-all ${isExpanded ? 'p-4 md:p-8' : 'p-0'}`}>
+            <div className={`bg-slate-900 transition-all duration-300 shadow-2xl relative overflow-hidden text-lg leading-relaxed font-medium text-slate-400 font-sans ${isExpanded ? 'rounded-[2.5rem] p-6 md:p-10' : 'rounded-none p-4 cursor-pointer hover:bg-slate-800'}`} onClick={() => !isExpanded && setIsExpanded(true)}>
                 {/* Header */}
-                <div className="flex items-center justify-between mb-10">
+                <div
+                    className={`flex items-center justify-between ${isExpanded ? 'mb-4 md:mb-10 cursor-pointer' : 'mb-0'}`}
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        setIsExpanded(!isExpanded);
+                    }}
+                >
                     <div className="flex items-center gap-3">
-                        <div className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] animate-pulse"></div>
+                        <div className={`w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.5)] ${isExpanded ? 'animate-pulse' : ''}`}></div>
                         <span className="text-[10px] font-black tracking-[0.3em] uppercase text-slate-500">Live Logic Preview</span>
                     </div>
+                    <button className="text-slate-500 hover:text-white transition-colors p-1">
+                        {isExpanded ? <ChevronDown size={20} /> : <ChevronUp size={20} />}
+                    </button>
                 </div>
 
                 {/* Content */}
-                <div className="space-y-8">
+                <div className={`space-y-8 transition-all duration-300 ${isExpanded ? 'opacity-100 max-h-[1000px]' : 'opacity-0 max-h-0 overflow-hidden'}`}>
                     <div>
                         <span className="">As a </span>
                         <span className={`${userProfile.role ? 'text-white font-bold' : 'text-slate-600 decoration-slate-700 underline decoration-dashed underline-offset-4 decoration-2'}`}>
