@@ -43,7 +43,7 @@ const App = () => {
 
     const [userProfile, setUserProfile] = useState(() => {
         const saved = localStorage.getItem('datastory_user_profile');
-        return saved ? JSON.parse(saved) : { fullName: '', email: '', phone: '', role: '', department: '', company: '' };
+        return saved ? JSON.parse(saved) : { fullName: '', email: '', phone: '', role: '', department: '', company: '', systemModule: '' };
     });
     const [currentStory, setCurrentStory] = useState({
         action: 'view an interactive dashboard',
@@ -115,13 +115,14 @@ const App = () => {
         };
 
         const grouped = stories.reduce((acc, s) => {
-            const key = `${s.userEmail || ''}|${s.submittedBy || ''}|${s.userRole || ''}`;
+            const key = `${s.userEmail || ''}|${s.submittedBy || ''}|${s.userRole || ''}|${s.userSystemModule || ''}`;
             if (!acc[key]) {
                 acc[key] = {
                     userRole: s.userRole,
                     userName: s.submittedBy,
                     userEmail: s.userEmail,
                     userDepartment: s.userDepartment,
+                    userSystemModule: s.userSystemModule,
                     stories: []
                 };
             }
@@ -134,6 +135,7 @@ const App = () => {
   userName: ${escape(u.userName)}
   userEmail: ${escape(u.userEmail)}
   userDepartment: ${escape(u.userDepartment)}
+  systemModule: ${escape(u.userSystemModule)}
   userStories:
 ${u.stories.map(s => {
                 const isoTime = getIsoTimestamp(s.timestamp);
@@ -216,6 +218,7 @@ ${s.granularity ? `      granularity: ${escape(s.granularity)}` : ''}
                 userRole: userProfile.role,
                 userEmail: userProfile.email,
                 userDepartment: userProfile.department,
+                userSystemModule: userProfile.systemModule,
                 timestamp: new Date().toISOString()
             } : s));
             setEditingId(null);
@@ -227,6 +230,7 @@ ${s.granularity ? `      granularity: ${escape(s.granularity)}` : ''}
                 userRole: userProfile.role,
                 userEmail: userProfile.email,
                 userDepartment: userProfile.department,
+                userSystemModule: userProfile.systemModule,
                 timestamp: new Date().toISOString()
             }]);
         }
