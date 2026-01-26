@@ -63,6 +63,13 @@ const Wizard = ({
                     </div>
                     <div className="space-y-4">
                         <div className="space-y-2">
+                            <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Granularity</label>
+                            <select className="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-500 bg-white font-bold" value={currentStory.granularity} onChange={(e) => setCurrentStory({ ...currentStory, granularity: e.target.value })}>
+                                <option value="">(Unspecified)</option>
+                                <option>Individual records</option><option>Hourly</option><option>Daily</option><option>Weekly</option><option>Monthly</option><option>Quarterly</option><option>Yearly</option>
+                            </select>
+                        </div>
+                        <div className="space-y-2">
                             <label className="text-xs font-black text-slate-400 uppercase tracking-widest">Refresh Frequency</label>
                             <select className="w-full px-4 py-3 border rounded-xl outline-none focus:ring-2 focus:ring-indigo-500 bg-white font-bold" value={currentStory.frequency} onChange={(e) => setCurrentStory({ ...currentStory, frequency: e.target.value })}>
                                 <option>Real-time</option><option>Hourly</option><option>Daily</option><option>Weekly</option><option>Monthly</option>

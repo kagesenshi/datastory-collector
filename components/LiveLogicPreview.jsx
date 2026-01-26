@@ -46,6 +46,13 @@ const LiveLogicPreview = ({ userProfile, currentStory }) => {
                         ) : (
                             <span className="text-slate-600"> ______ </span>
                         )}
+                        {currentStory.granularity && (
+                            <>
+                                <span className=""> at </span>
+                                <span className="text-white font-bold">{currentStory.granularity}</span>
+                                <span className=""> granularity</span>
+                            </>
+                        )}
                         <span className="">, </span>
                         <span className="">filterable by </span>
                         {currentStory.filters.length > 0 ? (

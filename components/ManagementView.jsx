@@ -41,6 +41,13 @@ const ManagementView = ({ stories, setView, setEditingId, setStep, startEditStor
                                         <span className="text-slate-900 font-bold">{s.metrics.join(', ')}</span>
                                         <span> over </span>
                                         <span className="text-slate-900 font-bold">{s.dimensions.join(', ')}</span>
+                                        {s.granularity && (
+                                            <>
+                                                <span> at </span>
+                                                <span className="text-indigo-600 font-bold">{s.granularity}</span>
+                                                <span> granularity</span>
+                                            </>
+                                        )}
                                         {s.filters && s.filters.length > 0 && (
                                             <>
                                                 <span>, filterable by </span>

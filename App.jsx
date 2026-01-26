@@ -51,6 +51,7 @@ const App = () => {
         dimensions: [],
         filters: [],
         frequency: 'Daily',
+        granularity: '',
         value: '',
         importance: 0,
         sources: []
@@ -145,6 +146,7 @@ ${u.stories.map(s => {
       dimensions:${listItems(s.dimensions, '      ')}
       filters:${listItems(s.filters, '      ')}
       frequency: ${escape(s.frequency)}
+${s.granularity ? `      granularity: ${escape(s.granularity)}` : ''}
       businessValue: ${escape(s.value)}
       importance: ${escape(s.importance)}
       sourceSystems:${listItems(s.sources, '      ')}
@@ -229,7 +231,7 @@ ${u.stories.map(s => {
             }]);
         }
         updateGlobalMemory(currentStory);
-        setCurrentStory({ action: 'view an interactive dashboard', metrics: [], dimensions: [], filters: [], frequency: 'Daily', value: '', importance: 0, sources: [] });
+        setCurrentStory({ action: 'view an interactive dashboard', metrics: [], dimensions: [], filters: [], frequency: 'Daily', granularity: '', value: '', importance: 0, sources: [] });
         setStep(1);
         setView('manage');
     };

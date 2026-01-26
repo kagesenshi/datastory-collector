@@ -81,6 +81,13 @@ const EDWBusMatrix = ({ stories, setView }) => {
                                                     ) : (
                                                         <span className="text-slate-400"> ... </span>
                                                     )}
+                                                    {story.granularity && (
+                                                        <>
+                                                            <span> at </span>
+                                                            <span className="text-indigo-600 font-bold">{story.granularity}</span>
+                                                            <span> granularity</span>
+                                                        </>
+                                                    )}
                                                     <span>...</span>
                                                 </div>
                                             </div>
